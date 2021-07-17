@@ -15,5 +15,10 @@ const init = async () => {
 		},
 	});
 
-	await server.registe;
+	await server.register({
+		plugin: notes,
+		options: {
+			service,
+		},
+	});
 };
