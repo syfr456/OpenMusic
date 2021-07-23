@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
+/* eslint-disable no-tabs */
 require('dotenv').config();
+
 const Hapi = require('@hapi/hapi');
-const SongService = require('./src/services/postgres/SongService');
-const SongValidator = require('./src/validator/songs');
+const songs = require('./src/api/songs');
+const SongsService = require('./src/services/postgres/SongService');
+const SongsValidator = require('./src/validator/songs');
 
 const init = async () => {
-  const songService = new SongService();
+  const songsService = new SongsService();
 
   const server = Hapi.server({
     port: process.env.PORT,
@@ -18,10 +21,10 @@ const init = async () => {
   });
 
   await server.register({
-    plugin: songService,
+    plugin: songs,
     options: {
-      service: songService,
-      validator: SongValidator,
+      service: songsService,
+      validator: SongsValidator,
     },
   });
 
