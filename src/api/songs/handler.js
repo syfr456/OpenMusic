@@ -67,11 +67,11 @@ class SongsHandler {
   async getSongByIdHandler(request, h) {
     try {
       const { id } = request.params;
-      const songs = this._service.getSongById(id);
+      const song = await this._service.getSongById(id);
       return {
         status: 'success',
         data: {
-          songs,
+          song,
         },
       };
     } catch (error) {
@@ -101,7 +101,7 @@ class SongsHandler {
 
       const { id } = request.params;
 
-      this._service.editSongById(id, request.payload);
+      await this._service.editSongById(id, request.payload);
 
       return {
         status: 'success',
@@ -130,12 +130,10 @@ class SongsHandler {
   async deleteSongByIdHandler(request, h) {
     try {
       const { id } = request.params;
-
-      this._service.deleteSongById(id);
-
+      await this._service.deleteSongById(id);
       return {
         status: 'success',
-        message: 'lagu berhasil dihapus',
+        message: 'Lagu berhasil dihapus',
       };
     } catch (error) {
       if (error instanceof ClientError) {
@@ -147,10 +145,10 @@ class SongsHandler {
         return response;
       }
 
-      // Server ERROR!
+      // server error
       const response = h.response({
         status: 'error',
-        message: 'Maaf, terjadi kegagalan pada server kami.',
+        message: 'Maaf, terjaddi kegagalan pada server kami.',
       });
       response.code(500);
       console.error(error);
