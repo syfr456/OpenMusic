@@ -20,7 +20,13 @@ const AuthenticationsService = require('./src/services/postgres/AuthenticationsS
 const TokenManager = require('./src/tokenize/TokenManager');
 const AuthenticationsValidator = require('./src/validator/authentications');
 
+// collaborations
+const collaborations = require('./src/api/collaborations');
+const CollaborationsService = require('./src/services/postgres/CollaborationsService');
+const CollaborationsValidator = require('./src/validator/collaborations');
+
 const init = async () => {
+  const collaborationsService = new CollaborationsService();
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
@@ -80,6 +86,14 @@ const init = async () => {
         usersService,
         tokenManager: TokenManager,
         validator: AuthenticationsValidator,
+      },
+    },
+    {
+      plugin: collaborations,
+      options: {
+        collaborationsService,
+        songsService,
+        validator: CollaborationsValidator,
       },
     },
   ]);

@@ -69,7 +69,7 @@ class SongsHandler {
       const { id } = request.params;
       const { id: credentialId } = request.auth.credentials;
 
-      await this._service.verifySongOwner(id, credentialId);
+      await this._service.verifySongAccess(id, credentialId);
       const song = await this._service.getSongById(id);
       return {
         status: 'success',
@@ -105,7 +105,7 @@ class SongsHandler {
       const { id } = request.params;
       const { id: credentialId } = request.auth.credentials;
 
-      await this._service.verifySongOwner(id, credentialId);
+      await this._service.verifySongAccess(id, credentialId);
 
       await this._service.editSongById(id, request.payload);
 

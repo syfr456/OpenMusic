@@ -7,8 +7,9 @@ const { mapDBToModel } = require('../../utils');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class SongsService {
-  constructor() {
+  constructor(collaborationService) {
     this._pool = new Pool();
+    this._collaborationService = collaborationService;
   }
 
   async addSong({
@@ -40,7 +41,10 @@ class SongsService {
 
   async getSongs(owner) {
     const query = {
-      text: 'SELECT * FROM songs WHERE owner = $1',
+      text: `SELECT songs.* FROM songs
+    LEFT JOIN collaborations ON collaborations.song_id = songs.id
+    WHERE songs.owner = $1 OR collaborations.user_id = $1
+    GROUP BY songs.id`,
       values: [owner],
     };
 
@@ -50,7 +54,10 @@ class SongsService {
 
   async getSongById(id) {
     const query = {
-      text: 'SELECT * FROM songs WHERE id=$1',
+      text: `Select songs.*, users.username
+      FROM songs
+      LEFT JOIN users ON users.id = songs.owner
+      WHERE songs.is = $1`,
       values: [id],
     };
 
@@ -107,6 +114,22 @@ class SongsService {
 
     if (song.owner !== owner) {
       throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
+    }
+  }
+
+  async verifySongAccess(songId, userId) {
+    try {
+      await this.verifySongOwner(songId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+
+      try {
+        await this._collaborationService.verifyCollaborator(songId, userId);
+      } catch {
+        throw error;
+      }
     }
   }
 }
