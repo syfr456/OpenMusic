@@ -8,7 +8,7 @@ class AuthenticationsHandler {
     this._validator = validator;
 
     this.postAuthenticationHandler = this.postAuthenticationHandler.bind(this);
-    this.putAuthenticationsHandler = this.putAuthenticationsHandler.bind(this);
+    this.putAuthenticationHandler = this.putAuthenticationHandler.bind(this);
     this.deleteAuthenticationHandler = this.deleteAuthenticationHandler.bind(this);
   }
 
@@ -57,7 +57,7 @@ class AuthenticationsHandler {
     }
   }
 
-  async putAuthenticationsHandler(request, h) {
+  async putAuthenticationHandler(request, h) {
     try {
       this._validator.validatePutAuthenticationPayload(request.payload);
 

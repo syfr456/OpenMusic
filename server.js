@@ -6,7 +6,7 @@ const Jwt = require('@hapi/jwt');
 
 // songs
 const songs = require('./src/api/songs');
-const SongsService = require('./src/services/postgres/SongService');
+const SongsService = require('./src/services/postgres/SongsService');
 const SongsValidator = require('./src/validator/songs');
 
 // users
@@ -15,7 +15,7 @@ const UsersService = require('./src/services/postgres/UsersService');
 const UsersValidator = require('./src/validator/users');
 
 // authentications
-const authentications = require('./src/api/authenticatons');
+const authentications = require('./src/api/authentications');
 const AuthenticationsService = require('./src/services/postgres/AuthenticationsService');
 const TokenManager = require('./src/tokenize/TokenManager');
 const AuthenticationsValidator = require('./src/validator/authentications');
@@ -55,7 +55,7 @@ const init = async () => {
       aud: false,
       iss: false,
       sub: false,
-      maxAgeeSec: process.env.ACCESS_TOKEN_AGE,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
     },
     validate: (artifacts) => ({
       isValid: true,
