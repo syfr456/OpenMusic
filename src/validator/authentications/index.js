@@ -21,7 +21,7 @@ const AuthenticationsValidator = {
     }
   },
 
-  validateDelteAuthenticationPayload: (payload) => {
+  validateDeleteAuthenticationPayload: (payload) => {
     const validationResult = DeleteAuthenticationPayloadSchema.validate(payload);
 
     if (validationResult.error) {

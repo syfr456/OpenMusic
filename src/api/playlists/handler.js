@@ -89,6 +89,8 @@ class PlaylistsHandler {
     };
   }
 
+  // playlist song ----------------------------------------
+
   async postPlaylistSongHandler(request, h) {
     this._validator.validatePlaylistSongPayload(request.payload);
     const { songId } = request.payload;
