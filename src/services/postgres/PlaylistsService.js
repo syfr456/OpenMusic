@@ -115,8 +115,6 @@ class PlaylistsService {
     }
   }
 
-  // playlist song -----------------------------------------------------
-
   async addPlaylistSong(playlistId, songId) {
     const id = `playlistsong-${nanoid(16)}`;
     const query = {
