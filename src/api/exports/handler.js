@@ -5,6 +5,8 @@ class ExportsHandler {
     this._service = service;
     this._playlistService = playlistService;
     this._validator = validator;
+
+    this.postExportPlaylistHandler = this.postExportPlaylistHandler.bind(this);
   }
 
   async postExportPlaylistHandler(request, h) {
@@ -13,18 +15,18 @@ class ExportsHandler {
       const { id: credentialId } = request.auth.credentials;
       await this._playlistService.verifyPlaylistAccess(playlistId, credentialId);
 
-      this._validator.validateExpportPlaylistPayload(request.payload);
+      this._validator.validateExportPlaylistPayload(request.payload);
       const message = {
         playlistId,
         targetEmail: request.payload.targetEmail,
       };
-      await this._service.sendMessage('export:notes', JSON.stringify(message));
+
+      await this._service.sendMessage('export:playlist', JSON.stringify(message));
 
       const response = h.response({
         status: 'success',
-        message: 'Permintaan Andala dalam antrean',
+        message: 'Permintaan Anda sedang kami proses',
       });
-
       response.code(201);
       return response;
     } catch (error) {
@@ -34,7 +36,7 @@ class ExportsHandler {
           message: error.message,
         });
         response.code(error.statusCode);
-        // return response;
+        return response;
       }
       // Server ERROR!
       const response = h.response({
